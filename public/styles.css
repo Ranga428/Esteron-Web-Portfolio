@@ -1,0 +1,199 @@
+/* Reset some default styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Container for content */
+.container {
+  max-width: 700px;
+  margin: 3rem auto 4rem auto;
+  background: #fff;
+  padding: 2.5rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Sticky menu bar */
+nav {
+  position: sticky;
+  top: 0;
+  background: #2c3e50;
+  padding: 1rem 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  margin: 0 20px;
+}
+
+.menu li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.menu li a:hover,
+.menu li a:focus {
+  color: #1abc9c;
+  outline: none;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.3rem;
+  color: #34495e;
+}
+
+h2 {
+  border-bottom: 3px solid #1abc9c;
+  padding-bottom: 0.4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: #16a085;
+}
+
+/* Paragraphs */
+p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* Lists */
+ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+ul#projects li {
+  margin-bottom: 0.8rem;
+}
+
+ul#projects li a {
+  color: #2980b9;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+ul#projects li a:hover {
+  text-decoration: underline;
+}
+
+/* Contact links */
+#contact-section a {
+  color: #2980b9;
+  font-weight: 600;
+}
+
+#contact-section a:hover {
+  text-decoration: underline;
+}
+
+/* Sections spacing */
+section {
+  margin-bottom: 3rem;
+}
+
+/* Edit form styles */
+#edit-section {
+  background: #ecf0f1;
+  padding: 1.8rem 2rem;
+  border-radius: 8px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+}
+
+#edit-section h2 {
+  margin-top: 0;
+  color: #34495e;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #2c3e50;
+}
+
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 1rem;
+  border: 2px solid #bdc3c7;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+  border-color: #1abc9c;
+  outline: none;
+}
+
+form button {
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.6rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #16a085;
+}
+
+#statusMsg {
+  margin-top: 0.8rem;
+  font-weight: 600;
+  color: #27ae60; /* green for success */
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .menu {
+    flex-direction: column;
+  }
+
+  .menu li {
+    margin: 10px 0;
+  }
+
+  .container {
+    margin: 1.5rem 1rem 3rem 1rem;
+    padding: 2rem 1.5rem;
+  }
+}

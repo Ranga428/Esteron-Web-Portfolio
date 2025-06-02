@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>John Doe - Student Portfolio</title>
+  <meta name="description" content="John Doe's student portfolio showcasing skills, projects, and contact info." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav aria-label="Primary navigation">
+      <ul class="menu" role="menubar">
+        <li role="none"><a role="menuitem" href="#about">About</a></li>
+        <li role="none"><a role="menuitem" href="#skills-section">Skills</a></li>
+        <li role="none"><a role="menuitem" href="#projects-section">Projects</a></li>
+        <li role="none"><a role="menuitem" href="#contact-section">Contact</a></li>
+        <li role="none"><a role="menuitem" href="/login.html" class="btn-login">Login to Edit</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container" id="main-content">
+    <section id="about" tabindex="-1" aria-labelledby="about-title">
+      <h1 id="about-title" class="section-title" tabindex="0">Loading...</h1>
+      <p id="bio"></p>
+    </section>
+
+    <section id="skills-section" tabindex="-1" aria-labelledby="skills-title">
+      <h2 id="skills-title" class="section-title">Skills</h2>
+      <ul id="skills" aria-live="polite" aria-relevant="additions"></ul>
+    </section>
+
+    <section id="projects-section" tabindex="-1" aria-labelledby="projects-title">
+      <h2 id="projects-title" class="section-title">Projects</h2>
+      <ul id="projects" aria-live="polite" aria-relevant="additions"></ul>
+    </section>
+
+    <section id="contact-section" tabindex="-1" aria-labelledby="contact-title">
+      <h2 id="contact-title" class="section-title">Contact</h2>
+      <p>Email: <a id="email" href="" aria-label="Email John Doe"></a></p>
+      <p>
+        LinkedIn:
+        <a id="linkedin" href="" target="_blank" rel="noopener noreferrer" aria-label="John Doe's LinkedIn Profile"></a>
+      </p>
+    </section>
+  </main>
+
+  <footer role="contentinfo" class="footer">
+    <p>&copy; 2025 John Doe. All rights reserved.</p>
+  </footer>
+
+  <script>
+    async function loadPortfolio() {
+      try {
+        const res = await fetch('/api/portfolio');
+        if (!res.ok) throw new Error('Network response was not ok');
+        const data = await res.json();
+
+        document.getElementById('about-title').textContent = data.name;
+        document.getElementById('bio').textContent = data.bio;
+
+        const skillsList = document.getElementById('skills');
+        skillsList.innerHTML = '';
+        data.skills.forEach(skill => {
+          const li = document.createElement('li');
+          li.textContent = skill;
+          skillsList.appendChild(li);
+        });
+
+        const projectsList = document.getElementById('projects');
+        projectsList.innerHTML = '';
+        data.projects.forEach(project => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = project.link;
+          a.textContent = `${project.name}: ${project.description}`;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.setAttribute('aria-label', `${project.name} project link`);
+          li.appendChild(a);
+          projectsList.appendChild(li);
+        });
+
+        const emailLink = document.getElementById('email');
+        emailLink.href = `mailto:${data.contact.email}`;
+        emailLink.textContent = data.contact.email;
+
+        const linkedinLink = document.getElementById('linkedin');
+        linkedinLink.href = data.contact.linkedin;
+        linkedinLink.textContent = data.contact.linkedin;
+
+      } catch (error) {
+        console.error('Failed to load portfolio data:', error);
+        const main = document.getElementById('main-content');
+        main.innerHTML = '<p style="color:red;">Failed to load portfolio data. Please try again later.</p>';
+      }
+    }
+
+    loadPortfolio();
+  </script>
+</body>
+</html>

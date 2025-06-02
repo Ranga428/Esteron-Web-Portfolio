@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Student Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container" id="login-container">
+    <h1>Login</h1>
+    <form id="loginForm" novalidate>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required autocomplete="username" />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required autocomplete="current-password" />
+
+      <button type="submit" class="btn-primary">Log In</button>
+    </form>
+    <p id="loginStatus" role="alert" aria-live="assertive"></p>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const loginStatus = document.getElementById('loginStatus');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = loginForm.username.value.trim();
+      const password = loginForm.password.value.trim();
+
+      if (!username || !password) {
+        loginStatus.textContent = 'Please enter both username and password.';
+        loginStatus.style.color = 'red';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        if (response.ok) {
+          loginStatus.textContent = 'Login successful! Redirecting...';
+          loginStatus.style.color = '#27ae60';
+          setTimeout(() => {
+            window.location.href = '/edit.html';
+          }, 1000);
+        } else {
+          const data = await response.json();
+          loginStatus.textContent = data.message || 'Login failed.';
+          loginStatus.style.color = 'red';
+        }
+      } catch (error) {
+        loginStatus.textContent = 'Error during login. Try again later.';
+        loginStatus.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Portfolio - Student Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav aria-label="User menu">
+    <ul class="menu">
+      <li><a href="/">Home</a></li>
+      <li><button id="logoutBtn" class="btn-logout">Log Out</button></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h1>Edit Portfolio Info</h1>
+    <form id="editForm" novalidate>
+      <label for="editName">Name:</label>
+      <input
+        type="text"
+        id="editName"
+        name="name"
+        required
+        minlength="2"
+        maxlength="50"
+        autocomplete="name"
+        placeholder="Enter your name"
+      />
+
+      <label for="editBio">Bio:</label>
+      <textarea
+        id="editBio"
+        name="bio"
+        rows="5"
+        required
+        minlength="10"
+        maxlength="300"
+        placeholder="Write a brief bio"
+      ></textarea>
+
+      <button type="submit" class="btn-primary">Update Portfolio</button>
+    </form>
+    <p id="statusMsg" role="alert" aria-live="assertive"></p>
+  </main>
+
+  <script>
+    async function loadPortfolio() {
+      try {
+        const res = await fetch('/api/portfolio');
+        if (!res.ok) throw new Error('Failed to load portfolio.');
+        const data = await res.json();
+        document.getElementById('editName').value = data.name;
+        document.getElementById('editBio').value = data.bio;
+      } catch {
+        document.getElementById('statusMsg').textContent = 'Error loading portfolio data.';
+        document.getElementById('statusMsg').style.color = 'red';
+      }
+    }
+
+    loadPortfolio();
+
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const updatedInfo = {
+        name: form.editName.value.trim(),
+        bio: form.editBio.value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/portfolio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedInfo)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          const statusMsg = document.getElementById('statusMsg');
+          statusMsg.textContent = data.message || 'Portfolio updated successfully.';
+          statusMsg.style.color = '#27ae60';
+          statusMsg.focus();
+        } else {
+          throw new Error(data.message || 'Update failed.');
+        }
+      } catch (error) {
+        const statusMsg = document.getElementById('statusMsg');
+        statusMsg.textContent = error.message || 'Error updating portfolio.';
+        statusMsg.style.color = 'red';
+        statusMsg.focus();
+      }
+    });
+
+    // Logout button
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      try {
+        await fetch('/api/logout', { method: 'POST' });
+        window.location.href = '/login.html';
+      } catch {
+        alert('Logout failed.');
+      }
+    });
+  </script>
+</body>
+</html>
